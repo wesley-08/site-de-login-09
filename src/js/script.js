@@ -12,11 +12,11 @@ form.addEventListener("submit", function(e) {
     const local = document.getElementById("local").value;
     const data = new Date().toLocaleDateString('pt-BR');
 
-    // Adicionar dados no array
+    // Adiciona ao array
     const registro = {data, nome, cpf, local};
     dados.push(registro);
 
-    // Adicionar linha na tabela
+    // Adiciona na tabela
     const novaLinha = tabela.insertRow();
     novaLinha.insertCell(0).innerText = data;
     novaLinha.insertCell(1).innerText = nome;
@@ -26,16 +26,17 @@ form.addEventListener("submit", function(e) {
     form.reset();
 });
 
-// Função para baixar CSV
+// Baixar CSV
 botaoCsv.addEventListener("click", function() {
     if(dados.length === 0){
         alert("Nenhum dado para baixar!");
         return;
     }
 
-    let csvContent = "data:text/csv;charset=utf-8,Data,Nome,CPF,Local\n";
+    let csvContent = "data:text/csv;charset=utf-8,Data,Nome,CPF,Endereço\n";
     dados.forEach(item => {
-        csvContent += `${item.data},${item.nome},${item.cpf},${item.local}\n`;
+        // Aspas evitam problemas com vírgulas nos campos
+        csvContent += `"${item.data}","${item.nome}","${item.cpf}","${item.local}"\n`;
     });
 
     const encodedUri = encodeURI(csvContent);
