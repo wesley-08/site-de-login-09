@@ -2,8 +2,9 @@ let dados = [];
 
 const form = document.getElementById("atendimentoForm");
 const tabela = document.getElementById("planilha").getElementsByTagName('tbody')[0];
-const botaoCsv = document.getElementById("baixarCsv");
+const botaoExcel = document.getElementById("baixarExcel");
 
+// Adicionar dados
 form.addEventListener("submit", function(e) {
     e.preventDefault();
 
@@ -12,11 +13,10 @@ form.addEventListener("submit", function(e) {
     const local = document.getElementById("local").value;
     const data = new Date().toLocaleDateString('pt-BR');
 
-    // Adiciona ao array
     const registro = {data, nome, cpf, local};
     dados.push(registro);
 
-    // Adiciona na tabela
+    // Adiciona na tabela HTML
     const novaLinha = tabela.insertRow();
     novaLinha.insertCell(0).innerText = data;
     novaLinha.insertCell(1).innerText = nome;
@@ -26,24 +26,20 @@ form.addEventListener("submit", function(e) {
     form.reset();
 });
 
-// Baixar CSV
-botaoCsv.addEventListener("click", function() {
+// Baixar Excel usando SheetJS
+botaoExcel.addEventListener("click", function() {
     if(dados.length === 0){
         alert("Nenhum dado para baixar!");
         return;
     }
 
-    let csvContent = "data:text/csv;charset=utf-8,Data,Nome,CPF,Endereço\n";
-    dados.forEach(item => {
-        // Aspas evitam problemas com vírgulas nos campos
-        csvContent += `"${item.data}","${item.nome}","${item.cpf}","${item.local}"\n`;
-    });
+    // Criar worksheet a partir do array de dados
+    const ws = XLSX.utils.json_to_sheet(dados);
 
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "atendimento.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // Criar workbook e adicionar worksheet
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Atendimento");
+
+    // Salvar arquivo
+    XLSX.writeFile(wb, "atendimento.xlsx");
 });
