@@ -1,47 +1,28 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atendimento</title>
-     <script src="./src/js/script.js" defer></script>
-    <link rel="stylesheet" href="./src/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atendimento</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Formulário de Atendimento</h1>
-        <form id="atendimentoForm">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" required>
+  <div class="container">
+    <h1>Formulário de Atendimento</h1>
+    <form id="atendimentoForm">
+      <label for="nome">Nome:</label>
+      <input type="text" id="nome" required>
 
-            <label for="cpf">CPF:</label>
-            <input type="text" id="cpf" required>
+      <label for="cpf">CPF:</label>
+      <input type="text" id="cpf" required>
 
-            <label for="local">Local onde mora:</label>
-            <input type="text" id="local" required>
+      <label for="endereco">Endereço:</label>
+      <input type="text" id="endereco" required>
 
-            <button type="submit">Enviar</button>
-        </form>
+      <button type="submit">Gerar Arquivo TXT</button>
+    </form>
+  </div>
 
-        <h2>Planilha de Atendimento (Online)</h2>
-        <table id="planilha">
-            <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Nome</th>
-                    <th>CPF</th>
-                    <th>Endereço</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Dados aparecerão aqui -->
-            </tbody>
-        </table>
-
-        <button id="baixarExcel">Baixar Excel</button>
-    </div>
-
-    <!-- Biblioteca SheetJS -->
-    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

@@ -1,45 +1,27 @@
-let dados = [];
+document.getElementById("atendimentoForm").addEventListener("submit", function(event) {
+  event.preventDefault();
 
-const form = document.getElementById("atendimentoForm");
-const tabela = document.getElementById("planilha").getElementsByTagName('tbody')[0];
-const botaoExcel = document.getElementById("baixarExcel");
+  let nome = document.getElementById("nome").value;
+  let cpf = document.getElementById("cpf").value;
+  let endereco = document.getElementById("endereco").value;
 
-// Adicionar dados
-form.addEventListener("submit", function(e) {
-    e.preventDefault();
+  // Data automática
+  let hoje = new Date();
+  let data = hoje.toLocaleDateString("pt-BR");
 
-    const nome = document.getElementById("nome").value;
-    const cpf = document.getElementById("cpf").value;
-    const local = document.getElementById("local").value;
-    const data = new Date().toLocaleDateString('pt-BR');
+  // Criar tabela em texto
+  let tabela = `
++------------+-----------------+----------------------+------------+
+|    Nome    |       CPF       |      Endereço        |    Data    |
++------------+-----------------+----------------------+------------+
+| ${nome.padEnd(10)} | ${cpf.padEnd(15)} | ${endereco.padEnd(20)} | ${data} |
++------------+-----------------+----------------------+------------+
+`;
 
-    const registro = {data, nome, cpf, local};
-    dados.push(registro);
-
-    // Adiciona na tabela HTML
-    const novaLinha = tabela.insertRow();
-    novaLinha.insertCell(0).innerText = data;
-    novaLinha.insertCell(1).innerText = nome;
-    novaLinha.insertCell(2).innerText = cpf;
-    novaLinha.insertCell(3).innerText = local;
-
-    form.reset();
-});
-
-// Baixar Excel usando SheetJS
-botaoExcel.addEventListener("click", function() {
-    if(dados.length === 0){
-        alert("Nenhum dado para baixar!");
-        return;
-    }
-
-    // Criar worksheet a partir do array de dados
-    const ws = XLSX.utils.json_to_sheet(dados);
-
-    // Criar workbook e adicionar worksheet
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Atendimento");
-
-    // Salvar arquivo
-    XLSX.writeFile(wb, "atendimento.xlsx");
+  // Criar arquivo txt
+  let blob = new Blob([tabela], { type: "text/plain;charset=utf-8" });
+  let link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "atendimento.txt";
+  link.click();
 });
